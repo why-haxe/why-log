@@ -27,10 +27,8 @@ abstract Config(ConfigObject) from ConfigObject to ConfigObject {
 					for(path in paths) switch tryRead(path) {
 						case null: // continue
 						case v:
-							trace('read config from $path');
 							return v;
 					}
-					trace('cannot find config file');
 					return '';
 				}
 				

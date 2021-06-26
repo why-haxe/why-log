@@ -27,13 +27,17 @@ abstract Log(why.log.Logger) from why.log.Logger to why.log.Logger {
 	public static macro function warn();
 	public static macro function debug();
 	
-	// log a value and return it
+	/**
+	 * Log a value and return it
+	 */
 	public inline static function peek<T>(v:T, ?pos:PosInfos):T {
 		logger.log(DEBUG, [v], pos);
 		return v;
 	}
 	
-	// for those who want to replace stock trace
+	/**
+	 * For those who want to replace stock trace
+	 */
 	public inline static function patchHaxeTrace() {
 		#if (!why.log.disabled)
 		haxe.Log.trace = why.Log.trace;
