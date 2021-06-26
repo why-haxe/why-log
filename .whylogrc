@@ -1,0 +1,9 @@
+{
+	"verbosity": 40,
+	"formatter": {
+		"showPosition": true,
+		"showDate": true,
+		"normalizePath": true,
+		"inspect": true
+	}
+}
