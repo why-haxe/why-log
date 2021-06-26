@@ -4,16 +4,16 @@ import haxe.macro.Context;
 import haxe.macro.Expr;
 
 abstract Log(Any) {
-	public macro function info(ethis, rest:Array<Expr>)
-		return macro @:pos(Context.currentPos()) $ethis.log(why.Log.INFO, ${macro $a{rest}});
+	public static macro function info(rest:Array<Expr>)
+		return macro @:pos(Context.currentPos()) why.Log.logger.log(why.Log.INFO, ${macro $a{rest}});
 	
-	public macro function error(ethis, rest:Array<Expr>)
-		return macro @:pos(Context.currentPos()) $ethis.log(why.Log.ERROR, ${macro $a{rest}});
+	public static macro function error(rest:Array<Expr>)
+		return macro @:pos(Context.currentPos()) why.Log.logger.log(why.Log.ERROR, ${macro $a{rest}});
 	
-	public macro function warn(ethis, rest:Array<Expr>)
-		return macro @:pos(Context.currentPos()) $ethis.log(why.Log.WARN, ${macro $a{rest}});
+	public static macro function warn(rest:Array<Expr>)
+		return macro @:pos(Context.currentPos()) why.Log.logger.log(why.Log.WARN, ${macro $a{rest}});
 	
-	public macro function debug(ethis, rest:Array<Expr>)
-		return macro @:pos(Context.currentPos()) $ethis.log(why.Log.DEBUG, ${macro $a{rest}});
+	public static macro function debug(rest:Array<Expr>)
+		return macro @:pos(Context.currentPos()) why.Log.logger.log(why.Log.DEBUG, ${macro $a{rest}});
 	
 }

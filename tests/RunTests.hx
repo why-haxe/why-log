@@ -1,14 +1,13 @@
 package ;
 
 import haxe.Timer;
-import why.Log.logger;
-import why.Log.logger;
+import why.Log.*;
 
 class RunTests {
 
 	static function main() {
-		haxe.Log.trace = why.Log.trace;
-		logger = new why.log.AnsiLogger();
+		why.Log.patchHaxeTrace();
+		why.Log.logger = new why.log.AnsiLogger();
 		// logger = new why.log.ConsoleLogger();
 		
 		final int = 10;
@@ -21,10 +20,11 @@ class RunTests {
 		
 		new haxe.Timer(1000).run = function() {
 			trace(1, 2, 3);
-			logger.info('info', int, str, date, obj);
-			logger.error('error', int, str, date, obj);
-			logger.warn('warn', int, str, date, obj);
-			logger.debug('debug', int, str, date, obj);
+			peek(1);
+			info('info', int, str, date, obj);
+			error('error', int, str, date, obj);
+			warn('warn', int, str, date, obj);
+			debug('debug', int, str, date, obj);
 			// logger.info('info', int, str, date, arr, map, obj, complex);
 			// logger.error('error', int, str, date, arr, map, obj, complex);
 			// logger.warn('warn', int, str, date, arr, map, obj, complex);

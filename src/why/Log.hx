@@ -15,73 +15,52 @@ abstract Log(why.log.Logger) from why.log.Logger to why.log.Logger {
 	public static inline final ERROR = 10;
 	
 	// confg
-	public static var config:Config;
+	public static var config(get, never):Config;
+	static inline function get_config() return Config.INST;
 	
 	// global instance
 	public static var logger:Log;
 	
 	// forward calls
-	public macro function info();
-	public macro function error();
-	public macro function warn();
-	public macro function debug();
+	public static macro function info();
+	public static macro function error();
+	public static macro function warn();
+	public static macro function debug();
 	
-	// configure
-	public function log(verbosity:Int, value:Array<Any>, ?pos:PosInfos):Void {
-		if(config.verbosity >= verbosity) {
-			this.log(verbosity, {pos: pos, date: Date.now()}, value);
-		}
+	// log a value and return it
+	public inline static function peek<T>(v:T, ?pos:PosInfos):T {
+		logger.log(DEBUG, [v], pos);
+		return v;
 	}
 	
 	// for those who want to replace stock trace
-	public static function trace(v:Dynamic, ?pos:PosInfos) {
+	public inline static function patchHaxeTrace() {
+		#if (!why.log.disabled)
+		haxe.Log.trace = why.Log.trace;
+		#end
+	}
+	
+	static function trace(v:Dynamic, ?pos:PosInfos) {
 		logger.log(DEBUG, switch pos.customParams {
 			case null: [v];
 			case params: [v].concat(params);
 		}, pos);
 	}
 	
-	static function __init__() {
-		loadConfig();
-		listen();
-	}
-	
-	static function listen() {
-		#if js
-			if(js.Syntax.code('"addEventListener" in {0}', js.Lib.global))
-				js.Lib.global.addEventListener('why.log.configChanged', loadConfig);
-			#if nodejs
-			js.Node.process.on('SIGHUP', loadConfig);
-			#end
+	#if why.log.disabled inline #end
+	public function log(verbosity:Int, value:Array<Any>, ?pos:PosInfos):Void {
+		#if (!why.log.disabled)
+		if(config.verbosity >= verbosity) {
+			this.log(verbosity, {pos: pos, date: Date.now()}, value);
+		}
 		#end
 	}
 	
-	static function loadConfig() {
-		final conf:Config = try haxe.Json.parse(sys.io.File.getContent('.whylogrc')) catch(_) cast {};
-		// TODO: load from localStorage on browser
-		
-		if(config == null) config = cast {};
-		config.verbosity = switch conf.verbosity {
-			case null: 100;
-			case v: v;
-		}
-		
-		if(config.formatter == null) config.formatter = cast {};
-		config.formatter.showDate = switch conf.formatter {
-			case null | {showDate: null}: true;
-			case {showDate: v}: v;
-		}
-		config.formatter.showPosition = switch conf.formatter {
-			case null | {showPosition: null}: true;
-			case {showPosition: v}: v;
-		}
-		config.formatter.normalizePath = switch conf.formatter {
-			case null | {normalizePath: null}: true;
-			case {normalizePath: v}: v;
-		}
-		config.formatter.inspect = switch conf.formatter {
-			case null | {inspect: null}: true;
-			case {inspect: v}: v;
-		}
+	#if (!why.log.disabled)
+	static function __init__() {
+		Config.load();
+		Config.listen();
 	}
+	#end
+	
 }
