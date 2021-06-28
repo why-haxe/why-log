@@ -14,8 +14,8 @@ class DefaultFormatter implements Formatter {
 	public function formatHeaders(headers:Headers):String {
 		final config = why.Log.config.formatter;
 		final buf = new StringBuf();
-		if(config.showPosition) buf.add((config.normalizePath ? headers.pos.fileName.normalize() : headers.pos.fileName) + ':' + headers.pos.lineNumber + ': ');
 		if(config.showDate) buf.add(headers.date.toString() + ': ');
+		if(config.showPosition) buf.add((config.normalizePath ? headers.pos.fileName.normalize() : headers.pos.fileName) + ':' + headers.pos.lineNumber + ': ');
 		return buf.toString();
 	}
 	
