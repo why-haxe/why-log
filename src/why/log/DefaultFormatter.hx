@@ -25,7 +25,7 @@ class DefaultFormatter implements Formatter {
 		if(config.inspect)
 			values = values.map(v -> js.node.Util.inspect(v, {colors: true, compact: false}));
 		#end
-		return values.join(', ');
+		return values.map(Std.string).join(', ');
 	}
 	
 }
