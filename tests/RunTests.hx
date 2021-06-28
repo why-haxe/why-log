@@ -31,6 +31,8 @@ class RunTests {
 			warn('warn', int, str, date, obj);
 			debug('debug', int, str, date, obj);
 			retainPos(int);
+			normal(int, str);
+			dyn(int, str);
 			// logger.info('info', int, str, date, arr, map, obj, complex);
 			// logger.error('error', int, str, date, arr, map, obj, complex);
 			// logger.warn('warn', int, str, date, arr, map, obj, complex);
@@ -40,6 +42,14 @@ class RunTests {
 	
 	static function retainPos(v:Dynamic, ?pos:PosInfos) {
 		why.Log.debug(v, pos);
+	}
+	
+	static function normal(i:Int, s:String) {
+		why.Log.debug(i, s);
+	}
+	
+	static function dyn(i:Int, s:Dynamic) {
+		why.Log.debug(i, s);
 	}
 	
 }

@@ -2,6 +2,7 @@ package why;
 
 import haxe.macro.Context;
 import haxe.macro.Expr;
+import haxe.macro.Type;
 
 abstract Log(Any) {
 	static final POS_INFO_TYPE = Context.getType('haxe.PosInfos');
@@ -20,14 +21,21 @@ abstract Log(Any) {
 	
 	static inline function forward(level:String, rest:Array<Expr>) {
 		final args = [macro why.Log.$level];
-		final pos = 
-			if(Context.unify(Context.typeof(rest[rest.length - 1]), POS_INFO_TYPE)) {
-				final pos = rest.pop();
-				args.push(macro $a{pack(rest)});
-				args.push(pos);
-			} else {
-				args.push(macro $a{pack(rest)});
+		final lastArgIsPos = (function isPos(type:Type) {
+			return switch type {
+				case TAbstract(_.get() => {pack: [], name: 'Null'}, [sub]): isPos(sub);
+				case TType(_.get() => {pack: ['haxe'], name: 'PosInfos'}, _): true;
+				case _: false;
 			}
+		})(Context.typeof(rest[rest.length - 1]));
+		
+		if(lastArgIsPos) {
+			final pos = rest.pop();
+			args.push(macro $a{pack(rest)});
+			args.push(pos);
+		} else {
+			args.push(macro $a{pack(rest)});
+		}
 			
 		return macro @:pos(Context.currentPos()) why.Log.logger.log($a{args});
 	}
