@@ -51,6 +51,17 @@ abstract Log(why.log.Logger) from why.log.Logger to why.log.Logger {
 		}, pos);
 	}
 	
+	#if (why.log.disabled || why.log.no_timer) inline #end
+	public static function timer(name:String) {
+		#if (!why.log.disabled && !why.log.no_timer)
+		final start = haxe.Timer.stamp();
+		return () -> {
+			final dt = haxe.Timer.stamp() - start;
+			'$name took ${Std.int(dt * 1000)}ms';
+		}
+		#end
+	}
+	
 	#if why.log.disabled inline #end
 	public function log(verbosity:Int, value:Array<Any>, ?pos:PosInfos):Void {
 		#if (!why.log.disabled)
