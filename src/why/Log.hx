@@ -55,13 +55,15 @@ abstract Log(why.log.Logger) from why.log.Logger to why.log.Logger {
 		return new why.log.Timer(name);
 	}
 	
-	#if why.log.disabled inline #end
-	public function log(verbosity:Int, value:Array<Any>, ?pos:PosInfos):Void {
-		#if (!why.log.disabled)
+	static macro function wrap();
+	public inline function log(verbosity:Int, value:Array<Any>, ?pos:PosInfos):Void {
+		why.Log.wrap(verbosity, _log(verbosity, value, pos));
+	}
+	
+	public function _log(verbosity:Int, value:Array<Any>, ?pos:PosInfos):Void {
 		if(config.verbosity >= verbosity) {
 			this.log(verbosity, {pos: pos, date: Date.now()}, value);
 		}
-		#end
 	}
 	
 	#if (!why.log.disabled)

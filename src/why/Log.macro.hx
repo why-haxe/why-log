@@ -40,6 +40,17 @@ abstract Log(Any) {
 		return macro @:pos(Context.currentPos()) why.Log.logger.log($a{args});
 	}
 	
+	static macro function wrap(level:Expr, call:Expr) {
+		return 
+			if(Context.defined('why.log.disabled')) macro null;
+			else switch [Context.definedValue('why.log.max_verbosity'), Context.definedValue('why.log.min_verbosity')] {
+				case [null, null]: call;
+				case [max, null]: macro if($level <= $v{Std.parseInt(max)}) $call;
+				case [null, min]: macro if($level >= $v{Std.parseInt(min)}) $call;
+				case [max, min]: macro if($level <= $v{Std.parseInt(max)} && $level >= $v{Std.parseInt(min)}) $call;
+			}
+	}
+	
 	static inline function pack(arr:Array<Expr>)
 		return arr.map(e -> macro cast $e);
 }
