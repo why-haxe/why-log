@@ -4,5 +4,4 @@
 
 -D analyzer-optimize
 # -D why.log.disabled
-# -D why.log.max_verbosity=30
-# -D why.log.min_verbosity=20
+-D why.log.verbosity=20

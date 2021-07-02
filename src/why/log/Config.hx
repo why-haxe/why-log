@@ -3,6 +3,16 @@ package why.log;
 using haxe.io.Path;
 using sys.FileSystem;
 using sys.io.File;
+
+typedef ConfigObject = {
+	verbosity:Int,
+	formatter:{
+		showPosition:Bool,
+		showDate:Bool,
+		normalizePath:Bool,
+		inspect:Bool,
+	}
+}
 @:forward
 abstract Config(ConfigObject) from ConfigObject to ConfigObject {
 	public static var INST:Config;
@@ -68,15 +78,5 @@ abstract Config(ConfigObject) from ConfigObject to ConfigObject {
 			case null | {inspect: null}: false;
 			case {inspect: v}: v;
 		}
-	}
-}
-
-typedef ConfigObject = {
-	verbosity:Int,
-	formatter:{
-		showPosition:Bool,
-		showDate:Bool,
-		normalizePath:Bool,
-		inspect:Bool,
 	}
 }
