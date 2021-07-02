@@ -45,10 +45,10 @@ abstract Log(why.log.Logger) from why.log.Logger to why.log.Logger {
 	}
 	
 	static function trace(v:Dynamic, ?pos:PosInfos) {
-		logger.log(DEBUG, switch pos.customParams {
+		why.Log.wrap(DEBUG, logger.log(DEBUG, switch pos.customParams {
 			case null: [v];
 			case params: [v].concat(params);
-		}, pos);
+		}, pos));
 	}
 	
 	public static inline function timer(name:String) {
