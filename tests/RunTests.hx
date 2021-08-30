@@ -17,6 +17,7 @@ class RunTests {
 		final arr = [for(i in 0...10) i];
 		final map = [for(i in 0...10) i => i * i];
 		final obj = {a: int, b: str, c: date}
+		final enm = haxe.ds.Option.Some(obj);
 		final complex = {obj: obj, arr: arr, map: map}
 		
 		final timer = new haxe.Timer(1000);
@@ -26,10 +27,11 @@ class RunTests {
 			
 			trace(1, 2, 3);
 			peek(1);
-			info('info', int, str, date, obj);
-			error('error', int, str, date, obj);
-			warn('warn', int, str, date, obj);
-			debug('debug', int, str, date, obj);
+			object(peek({foo: 'foo'}));
+			info('info', int, str, date, enm);
+			error('error', int, str, date, enm);
+			warn('warn', int, str, date, enm);
+			debug('debug', int, str, date, enm);
 			retainPos(int);
 			normal(int, str);
 			dyn(int, str);
@@ -50,6 +52,10 @@ class RunTests {
 	
 	static function dyn(i:Int, s:Dynamic) {
 		why.Log.debug(i, s);
+	}
+	
+	static function object(o:{final foo:String;}) {
+		trace(o.foo);
 	}
 	
 }

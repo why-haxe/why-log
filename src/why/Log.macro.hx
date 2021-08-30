@@ -4,6 +4,8 @@ import haxe.macro.Context;
 import haxe.macro.Expr;
 import haxe.macro.Type;
 
+using tink.MacroApi;
+
 abstract Log(Any) {
 	static final POS_INFO_TYPE = Context.getType('haxe.PosInfos');
 	
@@ -18,6 +20,20 @@ abstract Log(Any) {
 	
 	public static macro function debug(rest:Array<Expr>)
 		return forward('DEBUG', rest);
+	
+	public static macro function peek(v:Expr) {
+		final pos = Context.currentPos();
+		final ct = switch Context.getExpectedType() {
+			case null: pos.makeBlankType();
+			case type: type.toComplex({ direct: true });
+		}
+		
+		return macro {
+			final e:$ct = $v;
+			@:pos(pos) why.Log.logger.log(DEBUG, [e]);
+			e;
+		}
+	}
 	
 	static inline function forward(level:String, rest:Array<Expr>) {
 		final args = [macro why.Log.$level];

@@ -1,2 +1,4 @@
 -cp src
 -D why-log=0.0.0
+
+-lib tink_macro

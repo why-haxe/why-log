@@ -30,10 +30,7 @@ abstract Log(why.log.Logger) from why.log.Logger to why.log.Logger {
 	/**
 	 * Log a value and return it
 	 */
-	public inline static function peek<T>(v:T, ?pos:PosInfos):T {
-		logger.log(DEBUG, [v], pos);
-		return v;
-	}
+	public static macro function peek(v);
 	
 	/**
 	 * For those who want to replace stock trace
