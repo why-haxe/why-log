@@ -21,7 +21,7 @@ class AnsiLogger extends Logger {
 		colored(Yellow, headers, values);
 	
 	inline function error(headers:Headers, values:Array<Any>):Void
-		colored(RedBack, headers, values);
+		colored(Red, headers, values);
 	
 	inline function debug(headers:Headers, values:Array<Any>):Void
 		colored(Off, headers, values);
