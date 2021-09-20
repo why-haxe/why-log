@@ -4,4 +4,4 @@
 
 -D analyzer-optimize
 # -D why.log.disabled
--D why.log.verbosity=20
+-D why.log.verbosity=100

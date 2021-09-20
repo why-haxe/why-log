@@ -7,6 +7,7 @@ import why.Log.*;
 class RunTests {
 
 	static function main() {
+		trace(why.Log.config);
 		why.Log.patchHaxeTrace();
 		why.Log.logger = new why.log.AnsiLogger();
 		// logger = new why.log.ConsoleLogger();
@@ -39,6 +40,7 @@ class RunTests {
 			// logger.error('error', int, str, date, arr, map, obj, complex);
 			// logger.warn('warn', int, str, date, arr, map, obj, complex);
 			// logger.debug('debug', int, str, date, arr, map, obj, complex);
+			why.Log.custom(100, 'foo');
 		}
 	}
 	

@@ -22,10 +22,11 @@ abstract Log(why.log.Logger) from why.log.Logger to why.log.Logger {
 	public static var logger:Log;
 	
 	// forward calls
-	public static macro function info();
-	public static macro function error();
-	public static macro function warn();
 	public static macro function debug();
+	public static macro function info();
+	public static macro function warn();
+	public static macro function error();
+	public static macro function custom();
 	
 	/**
 	 * Log a value and return it

@@ -9,17 +9,20 @@ using tink.MacroApi;
 abstract Log(Any) {
 	static final POS_INFO_TYPE = Context.getType('haxe.PosInfos');
 	
-	public static macro function info(rest:Array<Expr>)
-		return forward('INFO', rest);
+	public static macro function debug(rest:Array<Expr>)
+		return forward(macro why.Log.DEBUG, rest);
 	
-	public static macro function error(rest:Array<Expr>)
-		return forward('ERROR', rest);
+	public static macro function info(rest:Array<Expr>)
+		return forward(macro why.Log.INFO, rest);
 	
 	public static macro function warn(rest:Array<Expr>)
-		return forward('WARN', rest);
+		return forward(macro why.Log.WARN, rest);
 	
-	public static macro function debug(rest:Array<Expr>)
-		return forward('DEBUG', rest);
+	public static macro function error(rest:Array<Expr>)
+		return forward(macro why.Log.ERROR, rest);
+	
+	public static macro function custom(level:Int, rest:Array<Expr>)
+		return forward(macro $v{level}, rest);
 	
 	public static macro function peek(v:Expr) {
 		final pos = Context.currentPos();
@@ -35,8 +38,8 @@ abstract Log(Any) {
 		}
 	}
 	
-	static inline function forward(level:String, rest:Array<Expr>) {
-		final args = [macro why.Log.$level];
+	static inline function forward(level:Expr, rest:Array<Expr>) {
+		final args = [level];
 		final lastArgIsPos = (function isPos(type:Type) {
 			return switch type {
 				case TAbstract(_.get() => {pack: [], name: 'Null'}, [sub]): isPos(sub);
