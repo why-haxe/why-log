@@ -33,7 +33,7 @@ abstract Log(Any) {
 		
 		return macro {
 			final e:$ct = $v;
-			@:pos(pos) why.Log.logger.log(DEBUG, [e]);
+			@:pos(pos) why.Log.logger.log(why.Log.DEBUG, [e]);
 			e;
 		}
 	}
